@@ -1,6 +1,6 @@
-name: "MyLabJournal"
+name: "Wasser-CRIM250"
 navbar:
-  title: "MyLabJournal"
+  title: "Wasser-CRIM250"
   left:
     - text: "Home"
       href: index.html

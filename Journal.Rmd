@@ -64,7 +64,7 @@ It is useful to rename the dataset as it creates a copy of the dataset stored in
 
 Use this command to make the state names into a new variable called State. 
 
-```{r, eval=FALSE}
+```{r, eval=TRUE}
 dat$state <- tolower(rownames(USArrests))
 ```
 

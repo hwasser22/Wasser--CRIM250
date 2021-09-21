@@ -2,12 +2,14 @@
 title: "Assignments"
 output:
   html_document:
-    toc: true
-    toc_float: true
-    collapsed: false
-    number_sections: false
+    toc: yes
+    toc_float: yes
+    collapsed: no
+    number_sections: no
     toc_depth: 1
-    #code_folding: hide
+  pdf_document:
+    toc: yes
+    toc_depth: '1'
 ---
 
 ```{r setup, include=FALSE}
@@ -148,7 +150,7 @@ In the console below (not in text), type `install.packages("maps")` and press En
 
 Run this code:
 
-```{r, eval = FALSE, fig.width = 7.5, fig.height = 4}
+```{r, eval = TRUE, fig.width = 7.5, fig.height = 4}
 library('maps') 
 library('ggplot2') 
 

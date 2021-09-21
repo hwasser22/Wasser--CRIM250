@@ -438,6 +438,7 @@ library(&#39;ggplot2&#39;)
 ggplot(dat, aes(map_id=state, fill=Murder)) + 
   geom_map(map=map_data(&quot;state&quot;)) + 
   expand_limits(x=map_data(&quot;state&quot;)$long, y=map_data(&quot;state&quot;)$lat)</code></pre>
+<p><img src="Journal_files/figure-html/unnamed-chunk-9-1.png" width="720" /></p>
 <p>What does this code do? Explain what each line is doing.</p>
 <p>Answer: First, the libraries for maps and ggplots are loaded. Next the ggplot function is called with first the parameter of dat as the dataset for the plot. The next set of parameters is for the aesthetic mapping for the plot basing the map_id for the values on the state variables and the fill/ color of that fill based on the Murder variable value for that representative map_id, as just defined. The fifth line further modifies the aesthetic mapping by defining the map for establishing the coordinate locations to display/divide the states and their fills. Lastly, the sixth line further modifies the aesthetic mapping by defining the x and y limits of this graphic based on the x and y limits from the state positional variables using their latitude and longitudinal values to ensure that all values are displayed.</p>
 <p>These last three lines together are creating a map of the Murder arrests per 100,000 people for each state by scaling the color of each state on a map of the United States to represent the degree of this amount in comparion to the other US states.</p>

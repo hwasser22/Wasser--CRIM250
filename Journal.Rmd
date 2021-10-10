@@ -177,7 +177,7 @@ These last three lines together are creating a map of the Murder arrests per 100
 # Set your working directory to the folder where you downloaded the data.
 
 ```{r}
-setwd("/Users/hwasser/Documents/Penn/4 Fourth Year/CRIM 250/Assignment 2")
+#setwd("/Users/hwasser/Documents/Penn/4 Fourth Year/CRIM 250/Assignment 2")
 
 ```
 
@@ -304,7 +304,7 @@ There are more English speakers that are male with 91 responding either very wel
 # Midterm
 
 ```{r}
-setwd("/Users/hwasser/Documents/Penn/4 Fourth Year/CRIM 250/Exam 1")
+#setwd("/Users/hwasser/Documents/Penn/4 Fourth Year/CRIM 250/Exam 1")
 dat <- read.csv(file = 'fatal-police-shootings-data.csv')
 ```
 

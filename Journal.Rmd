@@ -171,5 +171,129 @@ Lastly, the sixth line further modifies the aesthetic mapping by defining the x 
 
 These last three lines together are creating a map of the Murder arrests per 100,000 people for each state by scaling the color of each state on a map of the United States to represent the degree of this amount in comparion to the other US states.
 
+# Midterm
+
+```{r}
+setwd("/Users/hwasser/Documents/Penn/4 Fourth Year/CRIM 250/Exam 1")
+dat <- read.csv(file = 'fatal-police-shootings-data.csv')
+```
+
+
+# Problem 1 (10 points)
+
+a. Describe the dataset. This is the source: https://github.com/washingtonpost/data-police-shootings . Write two sentences (max.) about this.
+
+This dataset contains recordings of all fatal shootings by police in the United States since January 1st 2015 to the present (last updated 4 days ago) compiled by the Washington Post from news reports, law eenforcment sites, social media, and independent databases. For each fatal shooting, information about the victim and the manner in which they were treated by police is included, such as demographic information, whether or not the officer was wearing a body camera, the location, and the 'threat factor'.
+
+b. How many observations are there in the data frame?
+```{r}
+dim(dat)
+```
+
+There are 6594 observations of 17 variables.
+
+c. Look at the names of the variables in the data frame. Describe what "body_camera", "flee", and "armed" represent, according to the codebook. Again, only write one sentence (max) per variable.
+```{r}
+names(dat)
+#table(dat$body_camera)
+#table(dat$flee)
+#table(dat$armed)
+```
+
+body_camera is a binary variable that is True when news reports document that the officer was wearing a body camera and may have recorded at least some part of the interaction.
+The flee variable describes the manner in which a victim was moving away from the officers, if at all, and the responses are either 'Foot', 'Car', 'Not fleeing', 'Other', or blank.
+The armed variable describes if the victim possessed an object that the officer believed could harm others with responses of 'undetermined' (it is not know whether or not the victim was armed), 'unknown' (the victim possessed an object but what it was is not known), 'unarmed', or the identifier of the object itself.
+
+d. What are three weapons that you are surprised to find in the "armed" variable? Make a table of the values in "armed" to see the options.
+```{r}
+table(dat$armed)
+```
+
+Flashlight, wasp spray, and ice pick.
+
+
+# Problem 2 (10 points)
+
+a. Describe the age distribution of the sample. Is this what you would expect to see?
+```{r}
+hist(dat$age)
+table(dat$age)
+```
+
+The age distribution is skewed slightly to the right, with the largest group of victims being in their mid-late 20s to early-mid 30s. There are very few victims below the age of 15 and above the age of 71, however the tail on the right is longer. This is what I expected to see as the largest frequency shown here are part of the population that has the largest interaction with the police, however I was a little surprised by how few older teenage fatal shootings there were based on the increased involvement in crime and dangerous behavior that is demonstrated by this age group. I was also surprised by how high some of the values were on the right side of the peak.
+
+b. To understand the center of the age distribution, would you use a mean or a median, and why? Find the one you picked.
+```{r}
+summary(dat$age)
+median(dat$age, na.rm = TRUE)
+```
+
+As the age distribution is not symmetrical, the mean and median do not coincide. In this case, the distribution is skewed so the mean will be further towards the the tail, while the median will better represent the central tendency of the data. The median of age is 35 (excluding observations where age was not included).
+
+c. Describe the gender distribution of the sample. Do you find this surprising?
+```{r}
+table(dat$gender)
+```
+
+There were 6298 male victims and 293 female victims, making almost 95.5% of all victims of police shooting being male. While I expected there to be significantly more male than female victims based on the gender division for criminal activity especially for violent crimes, however I did not expect the difference to be this large.
+
+
+# Problem 3 (10 points)
+
+a. How many police officers had a body camera, according to news reports? What proportion is this of all the incidents in the data? Are you surprised that it is so high or low?
+
+```{r}
+table(dat$body_camera)
+```
+
+According to news reports, in only 910 of the incidents, the police officers had a body camera. Therefore, in only 16% of all fatal shootings by police, the police had a body camera. I am surprised that it is so low, as the vast majority of officers that I see on a day-to-day basis are wearing them, but I have to imagine that much of my perception about body-worn cameras is based on where I have lived and the policies in these cities.
+
+b. In  how many of the incidents was the victim fleeing? What proportion is this of the total number of incidents in the data? Is this what you would expect?
+```{r}
+table(dat$flee)
+```
+
+In 1058 cases the victim was fleeing by car, in 845 cases the victim was fleeing on foot, in 3952 cases the victim was not fleeing, in 248 cases the value was listed as Other, and no response was recorded for 491 cases. Excluding the 491 cases and 248 responses for 'Other', out of the remaining 5855 cases only 1903 cases the victim flee-ed in. Therefore, in 32.5% of cases the victim flee-ed (not including observations where the response was blank or Other due to lack of information). This statistic is a little suprising to me as I expected the percentage of victims that were fleeing to be higher as it does have some relation to the threat they pose to the public, especially if they are armed.
+
+
+
+# Problem 4 (10 points)
+
+a. Describe the relationship between the variables "body camera" and "flee" using a stacked barplot. What can you conclude from this relationship? 
+
+*Hint 1: The categories along the x-axis are the options for "flee", each bar contains information about whether the police officer had a body camera (vertically), and the height along the y-axis shows the frequency of that category).*
+
+*Hint 2: Also, if you are unsure about the syntax for barplot, run ?barplot in R and see some examples at the bottom of the documentation. This is usually a good way to look up the syntax of R code. You can also Google it.*
+
+
+```{r}
+barplot(table(dat$body_camera, dat$flee), main = "Relationship between body camera and flee", xlab = "Flee type", ylab = "Frequency", legend = TRUE)
+```
+
+From this stacked barplot, there does not appear to be a significant relationship between the officer wearing a body-worn camera and whether/ how a victim flees. It shows that in all cases of fleeing and not fleeing, officers are much more likely to not be wearing a body-worn camera.While it appears that those not fleeing and the officer is wearing a body camera vs those fleeing and the officer wearing a body camera is larger, in actuality these ratios are very similar and just looks larger because of the size of the column.
+
+
+# Extra credit (10 points)
+
+a. What does this code tell us? 
+
+```{r, eval=FALSE}
+mydates <- as.Date(dat$date)
+head(mydates)
+#tail(mydates)
+(mydates[length(mydates)] - mydates[1])
+```
+
+This code first modifies the character representation of the date provided in the table and classifies it as an object of the Date class. The head function is used to show the first couple values in this table of format-modified dates. Lastly, the difference between the final date (same as table[length(table)]) included in the table and the first date in the table is found to determine the number of days between the two. This shows that this data represents 2458 days fro January 2nd 2015 to September 25 2021.
+
+b. On Friday, a new report was published that was described as follows by The Guardian: "More than half of US police killings are mislabelled or not reported, study finds." Without reading this article now (due to limited time), why do you think police killings might be mislabelled or underreported?
+
+As police killings reflect poorly on police officers and as it is their responsibility to report them, there is a motivation and ability to not accurately report this data so that it presents a more positive view of the police/ their abilities. Additionally, it is possible that these incidents are being intentionally mislabled to better a precincts statistics or simply due to error caused by excessive movement of paperwork and lack of a streamlined process.
+
+c. Regarding missing values in problem 4, do you see any? If so, do you think that's all that's missing from the data?
+
+For the flee variable, there are 491 responses that left this column blank. I would expect there to be more missing values in the dataset. Other missing values include 3 victims that do not have a gender listed and 752 victims whose race value was missing.
+
+
 
 $$\\[2in]$$

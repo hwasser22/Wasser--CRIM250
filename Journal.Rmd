@@ -171,6 +171,136 @@ Lastly, the sixth line further modifies the aesthetic mapping by defining the x 
 
 These last three lines together are creating a map of the Murder arrests per 100,000 people for each state by scaling the color of each state on a map of the United States to represent the degree of this amount in comparion to the other US states.
 
+# Assignment 2
+# Problem 1: Load data
+
+# Set your working directory to the folder where you downloaded the data.
+
+```{r}
+setwd("/Users/hwasser/Documents/Penn/4 Fourth Year/CRIM 250/Assignment 2")
+
+```
+
+
+# Read the data
+```{r}
+dat <- read.csv(file = 'dat.nsduh.small.1.csv')
+```
+
+# What are the dimensions of the dataset? 
+```{r}
+dim(dat)
+```
+
+There are 171 rows (excluding the row containing the column names) and 7 columns
+
+## Problem 2: Variables
+
+# Describe the variables in the dataset.
+```{r}
+names(dat)
+```
+
+
+•	mjage is the age that respondents reported first trying marijuana or hashish
+•	cigage is the age that respondents reported first started smoking cigarettes everyday
+•	iralcage is the age that respondents reported first trying alcohol
+•	age2 is a variable that represents an age bracket corresponding to the consistency checked age from respondents reported age from the beginning of the survey, end of the survey, and their birth date
+•	sexatract is a variable representing categories of sexual attraction ranging from only attraction to the opposite sex to only attraction to the same sex reported by the respondent
+•	speakengl is a variable that represents how well a respondent reports their ability to speak English with categories of very well, well, not well, and not at all
+•	irsex is a variable that represents the respondents reported gender with 1 as male and 2 as female
+
+
+# What is this dataset about? Who collected the data, what kind of sample is it, and what was the purpose of generating the data?
+
+This dataset is a sample from the 2019 National Survey for Drug Use and Health that focuses on the data collected on tobacco, alcohol, and drug use in the United States, along with the demographic information for these respondents, and is a stratified random sample. This data is collected by the Substance Abuse and Mental Health Services Administration (SAMHSA), which is an agency in the U.S. Department of Health and Human Services (HHS), in order to provide support for prevention/ treatment programs, monitor substance use trends in the United States, and ultimately inform public health policy by estimating the need for treatment in the US based on this data.
+
+
+## Problem 3: Age and gender
+
+# What is the age distribution of the sample like? Make sure you read the codebook to know what the variable values mean.
+
+```{r}
+table(dat$age2)
+hist(dat$age2, main = "Histogram of Age", xlab = "Age")
+```
+
+This histogram shows a clear skew to the right with distribution with the largest number of respondents being between 39-45 years old, with very few respondents under the age of 20 years old.
+
+# Do you think this age distribution representative of the US population? Why or why  not?
+
+I do not believe that this age distribution is representative of the US population as there were no respondents (0%) being under 15 years of age and only 7.6% of respondents being 65 or older. The actual US population is 18.37% for ages 0-14 and 16.63% for 65 and older, which is clearly not represented by the respondents in this survey, however including the younger demographic would not be useful in this data collection as they would likely be unable to provide answers to the majority of these questions about drug and alcohol use. Furthermore, this sample has large peaks, as shown my the high frequency for the 39-45 year old respondents, however the US population distribution is much more consistent in this middle section with no peaks.
+
+# Is the sample balanced in terms of gender? If not, are there more females or males?
+```{r}
+table(dat$irsex)
+```
+
+There are 91 respondents for 1 and 80 respondents for 2, so there are more males than females in the sample.
+
+# Use this code to draw a stacked bar plot to view the relationship between sex and age. What can you conclude from this plot?
+```{r}
+tab.agesex <- table(dat$irsex, dat$age2)
+barplot(tab.agesex,
+        main = "Stacked barchart",
+        xlab = "Age category", ylab = "Frequency",
+        legend.text = rownames(tab.agesex),
+        beside = FALSE) # Stacked bars (default)
+```
+
+From this stacked bar graph, it appears that there seems to be a fairly even split between male and female respondents on average for the age categories. Looking at it more carefully though, it can be seen that the bins 6, 7, 14, 16, and 17 have at least slightly more male respondents than female respondents, while bins 8 and 9 have more female than male respondents.
+
+
+## Problem 4: Substance use
+
+# For which of the three substances included in the dataset (marijuana, alcohol, and cigarettes) do individuals tend to use the substance earlier?
+```{r}
+par(mfrow=c(3,1))
+hist(dat$mjage)
+hist(dat$cigage)
+hist(dat$iralcage)
+
+table(dat$mjage)
+table(dat$cigage)
+table(dat$iralcage)
+```
+
+It appears that of the three substances, individuals tend to try alcohol earliest. While the early age of use is similar across these substances, alcohol has the youngest responses with 2 at age 5, in comparison to 7 and 10 for cigarettes and marijuana, as well as having similar numbers of respondents for the following years as marijuana, demonstrating these are not pure outliers, making it the substance that individuals tend to use earlier. For each substance, the highest reported age frequency was 16, demonstrating the early similarity between them, but alcohol has more respondents on the younger end of this spectrum than marijuana or cigarettes, as well as not having any respondents greater than 23, in comparison to 35 and 50 for the other substances.
+
+
+## Problem 5: Sexual attraction
+
+# What does the distribution of sexual attraction look like? Is this what you expected?
+```{r}
+table(dat$sexatract)
+```
+
+The distribution of sexual attraction is strongly skewed to the left towards only attraction to the opposite sex. Honestly this is not what I expected, as I would say that at least a 30-40% of the people I know in my generation identify as not straight, but I should have recognized the generational divide and as the survey respondents ages are distributed more on the older side, this should have been more expected. When comparing these numbers to national surveys on sexual attraction, especially ones with larger amounts of older 
+
+# What is the distribution of sexual attraction by gender? 
+```{r}
+table(dat$sexatract, dat$irsex)
+```
+
+When comparing sexual attraction by gender, it appears that there are more women who identify as mostly attracted to the same sex and equally attracted to males and females than there are male respondents for either of these categories. Compensating for these differences, there are more males that responded that they are only attracted to the opposite sex than females.
+
+
+## Problem 6: English speaking
+
+# What does the distribution of English speaking look like in the sample? Is this what you might expect for a random sample of the US population?
+```{r}
+table(dat$speakengl)
+```
+
+The vast majority of respondents report speaking English very well with 161 respondents, and then only 8 respondents for well and 2 for not well. This is consistent with what would be expected from a random sample of the US population. The US census reports that only 8.6% of the population “does not have a firm grasp of the English language”, making the 94% of respondents in the survey stating very well is consistent with this data.
+
+# Are there more English speaker females or males?
+```{r}
+table(dat$speakengl, dat$irsex)
+```
+
+There are more English speakers that are male with 91 responding either very well or well, with only 78 females responding to these categories, however this can be accounted for by the fact that more males responded to the survey in general. 100% of male respondents reported that they spoke English very well or well, and 97.5% of female male respondents reported that they spoke English very well or well. 
+
 # Midterm
 
 ```{r}

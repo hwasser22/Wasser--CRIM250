@@ -3,3 +3,10 @@ knitr
 maps
 ggplot2
 readr
+tidyverse
+tibble
+tidyr
+purrr
+dplyr
+stringr
+forcats

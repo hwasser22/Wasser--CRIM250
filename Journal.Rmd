@@ -554,6 +554,107 @@ We are not able to make this conclusion that if individuals were to receive more
 
 States with larger budgets that invest more into government and social programs- states that have higher mean education levels because of increased funding into the education system may also having higher funding for police initiatives such as building more streamlined, online reporting portals for crimes, which would likely increase the likelihood that crimes are reported due to the easier process which has no relation to the average education level of its citizens.
 
+# Midterm 2
+
+### Instructions
+
+a. Create a folder in your computer (a good place would be under Crim 250, Exams). 
+
+b. Download the dataset from the Canvas website (sim.data.csv) onto that folder, and save your Exam 2.Rmd file in the same folder.
+
+c. Data description: This dataset provides (simulated) data about 200 police departments in one year. It contains information about the funding received by the department as well as incidents of police brutality. Suppose this dataset (sim.data.csv) was collected by researchers to answer this question: **"Does having more funding in a police department lead to fewer incidents of police brutality?"**
+d. Codebook:
+- funds: How much funding the police department received in that year in millions of dollars.
+- po.brut: How many incidents of police brutality were reported by the department that year.
+- po.dept.code: Police department code
+
+### Problem 1: EDA (10 points) 
+
+Describe the dataset and variables. Perform exploratory data analysis for the two variables of interest: funds and po.brut.
+
+```{r}
+dat <- read.csv(file = 'sim.data.csv')
+names(dat)
+dim(dat)
+summary(dat)
+hist(dat$fund)
+hist(dat$po.brut)
+```
+
+This dataset has 200 observations of 3 variables representing 200 police departments identified with a numeral (po.dept.code) with variables describing their yearly funding in millions of dollars (funds) and the number of police brutality incidents reported by the department during this year (po.brut).
+
+Funds: The minimum funding in millions that a department received was 21.4 and the most was 99.7. The mean funding received was 61.04 and the median funding was 59.75.
+
+po.brut: The minimum number of police brutality incidents reported by the department during a year was 0 and the most was 29. The mean number of incidents reported was 18.14 and the median incidents was 19.
+
+The histograms of these variables show a moderetly symmetrical distribution with peaks in the center of the data sets (as shown by the mean and median earlier) and few police departments on either end of the low or high ranges for the variables.
+
+
+### Problem 2: Linear regression (30 points)
+
+a. Perform a simple linear regression to answer the question of interest. To do this, name your linear model "reg.output" and write the summary of the regression by using "summary(reg.output)". 
+
+```{r}
+reg.output <- lm(dat$po.brut ~ dat$funds, data = dat)
+summary(reg.output)
+```
+
+b. Report the estimated coefficient, standard error, and p-value of the slope. Is the relationship between funds and incidents statistically significant? Explain.
+
+The estimated coefficient of the slope is -0.367099 and the estimated coefficient of the intercept is 40.543069.
+
+The standard error is 0.004496.
+
+The p-value is < 2.2e-16.
+
+c. Draw a scatterplot of po.brut (y-axis) and funds (x-axis). Right below your plot command, use abline to draw the fitted regression line, like this:
+```{r, fig.width=4, fig.height=4}
+plot(dat$funds, dat$po.brut, main="Relationship between funds and police brutality",
+    xlab="Funds in millions", ylab="Number of reported cases of police brutality")
+abline(reg.output, col = "red", lwd=2)
+```
+Does the line look like a good fit? Why or why not?
+
+The coefficient of determination- as shown here with both the multiple R^2 and the Adjusted R^2 values- are very close to 1 (0.9712 and 0.971), so the regression model accounts for more variance. Additionally, it visually appears to be fairly fitted and even though the tails of the data are a little skewed, overall the line is a good fit.
+
+d. Are the four assumptions of linear regression satisfied? To answer this, draw the relevant plots. (Write a maximum of one sentence per assumption.) If not, what might you try to do to improve this (if you had more time)?
+
+```{r, fig.width=4, fig.height=4}
+#Linearity Assumption:
+plot(dat$funds, reg.output$residuals, main="Residuals vs. x", xlab="x, Funds", ylab="Residuals")
+abline(h = 0, lty="dashed")
+plot(reg.output, which=1)
+#Independence Assumption: using Residuals vs. x plotted above
+plot(dat$funds, dat$po.brut, main="Relationship between funds and police brutality",
+    xlab="Funds in millions", ylab="Number of reported cases of police brutality")
+abline(reg.output, col = "red", lwd=2)
+#Equal Variance Assumption/ Homoscedasticity:
+plot(reg.output, which=3)
+#Normal Population Assumption:
+plot(reg.output, which=2)
+plot(reg.output, which=5)
+```
+
+Linearity Assumption: This assumption is not met. The residuals vs. x plot does not have a horizontal direction and does have a significant pattern in the data.
+
+Independence Assumption: This assumption is also not met for the same reason as the linearity assumption as the residuals vs. x plot does not have a horizontal direction and does have a significant pattern in the data and because there does not seem to be a time-series component to the data.
+
+Equal Variance Assumption/ Homoscedasticity: This assumption is not met. While the scatter plot of funds vs. reported police brutality has no apparent tendency for the variations to grow or shrink in any part of the plot, there are significant trends shown by the line in the scale-location plot showing that the errors do not have a constant variance.
+
+Normal Population Assumption: This assumption is not met as the q-q plot has significant left skew deviations for the tail values in this plot.
+
+As these assumptions are not met, if I had more time, I would use the box-cox method to find the best transformation for this data, transform the x variable, and repeat this process.
+
+
+e. Answer the question of interest based on your analysis.
+
+While the p-value is very small, we cannot conclude that greater funding will reduce incidents of police brutality. None of the four assumptions of linear regressions were satisfied, so we cannot use this model to assess the relationship between these two variables. If this data was transformed and the assumptions could be met with the transformed model, this relationship could be properly assessed.
+
+### Problem 3: Data ethics (10 points)
+
+Describe the dataset. Considering our lecture on data ethics, what concerns do you have about the dataset? Once you perform your analysis to answer the question of interest using this dataset, what concerns might you have about the results?
+
+This data set represents 200 police departments with their yearly funding in millions and the departments reported incidents of police brutality. First, it is important to recognize that the police brutality count is only based on what is reported by the department and as police brutality incidents reflect poorly on the department, the department may be under reporting these incidents. This calls into question the fairness of the data as it may not be truly representative of the number of incidents that are actually occurring and could be biased as it is self-reported. Furthermore, with limited information provided by the code book, there is no information about how the sample was collected, requiring the need of assessment for random sampling before utilizing this data for analysis, as well as having no mechanism to redress if people are harmed by the results. However, based on the information provided here, this data set is good in terms of privacy and security as the departments are only represented by a numeric code that has no relation to their identification. Overall, these concerns about the ethics of this dataset call into question the validity of any results from the analysis of this data, as well as concerns about the effect the distribution of these results could have.
 
 # Assignment 4
 

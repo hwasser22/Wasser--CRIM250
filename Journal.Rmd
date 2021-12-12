@@ -1135,10 +1135,11 @@ Description of the Dataset
   
 Missing Values
 
-	Within the dataset, there were many missing values for the “arson” variable. This may be because it is a relatively uncommon crime on college campuses; while some institutions chose to denote a lack of arson with “0”, others may have chosen to simply not report a value. There were four states that were not included in the dataset (namely, Alabama, Idaho, Hawaii, and Oregon) because they either did not release complete 12 month data or they did not release any data at all. 
+Within the dataset, there were many missing values for the “arson” variable. This may be because it is a relatively uncommon crime on college campuses; while some institutions chose to denote a lack of arson with “0”, others may have chosen to simply not report a value. There were four states that were not included in the dataset (namely, Alabama, Idaho, Hawaii, and Oregon) because they either did not release complete 12 month data or they did not release any data at all.
 	
 Additional Data
-  For our analysis, we created several new tables to create our EDA plots and to utilize for our linear regressions. The table used for the majority of our analysis is composed of 46 observations on 13 variables, with each observation representing the states with reported data (omitting Alabama, Idaho, Hawaii, and Oregon). The added variables in these datasets are state.leaning (a binary variable that represents the political affiliation the state had in the 2016 presidential election; 0=democratic and 1= republican) and total (an integer variable that is the summation of all crimes committed in the state; i.e., the sum of all crimes in all participating in-state institutions within a state). 
+
+For our analysis, we created several new tables to create our EDA plots and to utilize for our linear regressions. The table used for the majority of our analysis is composed of 46 observations on 13 variables, with each observation representing the states with reported data (omitting Alabama, Idaho, Hawaii, and Oregon). The added variables in these datasets are state.leaning (a binary variable that represents the political affiliation the state had in the 2016 presidential election; 0=democratic and 1= republican) and total (an integer variable that is the summation of all crimes committed in the state; i.e., the sum of all crimes in all participating in-state institutions within a state).
 
 Load the data.
 ```{r}
@@ -1150,9 +1151,9 @@ dat5 <- read.csv(file = 'FinalProjectData5.csv')
 
 Breakdown of Political Leaning
 
-	Within the UCR Dataset, and of the 46 states that reported data about crime on college campuses, we found that a majority were Republican as determined by the 2016 election results. With 28 Republican states and only 18 Democratic ones, this discrepancy is an important consideration given that our analysis compares the differences in crime rates between these two categories of states on average. This means that a smaller number of states skews the average number of crimes generated during the regression analysis significantly, despite relative consistencies in the number of colleges/populations on average between the two political affiliations. The takeaway of this plot is that there were more Republican states than Democratic states reporting; therefore, we should be cognizant that our conclusions may reflect this disparity.
+Within the UCR Dataset, and of the 46 states that reported data about crime on college campuses, we found that a majority were Republican as determined by the 2016 election results. With 28 Republican states and only 18 Democratic ones, this discrepancy is an important consideration given that our analysis compares the differences in crime rates between these two categories of states on average. This means that a smaller number of states skews the average number of crimes generated during the regression analysis significantly, despite relative consistencies in the number of colleges/populations on average between the two political affiliations. The takeaway of this plot is that there were more Republican states than Democratic states reporting; therefore, we should be cognizant that our conclusions may reflect this disparity.
 
-```{r, fig.width=2.2, fig.height=3}
+```{r, fig.width=4.2, fig.height=6}
 y = data.frame(Political_Leaning=c('Republican', 'Democratic'),Number=c(28,18))
 colours = c("red", "blue")
 w <- c(0.05, 0.05)
@@ -1160,6 +1161,7 @@ barplot(y$Number, width = w, main='Number of Democratic and Republican
 States in the UCR Dataset', ylab='Number of States Represented in the UCR Dataset', xlab='State Political Affiliation', names.arg=y$Political_Leaning, col=colours, ylim=c(0,30))
 
 ```
+
 Figure 1. Bar Graph of the Number of Democratic and Republican States in the UCR Table 9 Dataset.
 
 Frequencies of Crime Types
@@ -1254,7 +1256,7 @@ Final Discussion
   
 Limitations
 
-	Along with the limitations discussed above regarding the incomplete reporting data and the inclusion of more Republican states, there are other key limitations that need to be addressed. Firstly, California and Texas were significant outliers given that they not only had the most in-state institutions voluntarily report but the institutions within these states also had larger student enrollments. Given that our regression analysis results show the number of crimes on average, any state/institution with a larger student enrollment would skew the average for each state, shifting the representative sample of the states within each political affiliation group. Another limitation of our method is that we only utilized 2016 election results to assign political alignment rather than placing the state on a spectrum of the percentage of votes for a certain party. Because of this, the state.leaning variable was binary, which might explain why our linear regression model did not satisfy any of the assumptions. While one might question why we chose to keep this variable as binary, rather than switching to a spectrum before completing our analysis, the existence of swing states would have made it difficult to analyze the results. If states were hovering near 50%, it would be difficult to determine the influence of political affiliation on perceptions of crime and policing. 
+Along with the limitations discussed above regarding the incomplete reporting data and the inclusion of more Republican states, there are other key limitations that need to be addressed. Firstly, California and Texas were significant outliers given that they not only had the most in-state institutions voluntarily report but the institutions within these states also had larger student enrollments. Given that our regression analysis results show the number of crimes on average, any state/institution with a larger student enrollment would skew the average for each state, shifting the representative sample of the states within each political affiliation group. Another limitation of our method is that we only utilized 2016 election results to assign political alignment rather than placing the state on a spectrum of the percentage of votes for a certain party. Because of this, the state.leaning variable was binary, which might explain why our linear regression model did not satisfy any of the assumptions. While one might question why we chose to keep this variable as binary, rather than switching to a spectrum before completing our analysis, the existence of swing states would have made it difficult to analyze the results. If states were hovering near 50%, it would be difficult to determine the influence of political affiliation on perceptions of crime and policing. 
 	
 Future Research Recommendations
 
@@ -1272,31 +1274,38 @@ Gramlich, J. (2016, November 16). Voters' perceptions of crime continue to confl
 
 Perlman, L. (2021, November 4). 3 crimes, 0 alerts: A look into Penn's crime reporting system. The Daily Pennsylvanian. https://www.thedp.com/article/2021/11/penn-alerts-clery-crimes-reporting-system.  
 
+
 Appendix A
+
 Codebook: Variable Names and Relevant Definitions
-state
-Full name of the state where the college campus is located
-university.college
-Full name of college or university
-Campus
-Individual campus name where applicable- ex. California State University ‘Bakersfield’, if inapplicable a value of N/A is inputted
-student.enrollment
-Integer variable based on 2018 United States Department of Education enrollment reports that includes both undergraduate and graduate populations where applicable
+
+```{r}
+#state
+#   Full name of the state where the college campus is located
+#university.college
+#   Full name of college or university
+#Campus
+#   Individual campus name where applicable- ex. California State University ‘Bakersfield’, if inapplicable a #   value of N/A is inputted
+#student.enrollment
+#   Integer variable based on 2018 United States Department of Education enrollment reports that includes both     undergraduate and graduate populations where applicable
+```
 
 The following variables are based on the local definition of the crime in the given jurisdiction- the only exceptions are included below.
-violent.crime
-murder
-This variable includes both murder and non-negligent manslaughter
-rape
-This definition is based on the 2017 UCR revised defintion of rape that removes the variable of ‘forcible’ from the classification
-robbery
-aggravated.assault
-property.crime
-burglary
-larceny.theft
-motor.vehicle.theft
-arson
 
+```{r}
+#violent.crime
+#murder
+#   This variable includes both murder and non-negligent manslaughter
+#rape
+#   This definition is based on the 2017 UCR revised defintion of rape that removes the variable of ‘forcible’     from the classification
+#robbery
+#aggravated.assault
+#property.crime
+#burglary
+#larceny.theft
+#motor.vehicle.theft
+#arson
+```
 
 
 
